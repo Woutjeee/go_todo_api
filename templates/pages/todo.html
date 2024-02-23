@@ -1,14 +1,21 @@
 <div>
     <h3>{{.heading}}</h3>
 
-    <div>
-        <button class="bg-green-500 p-3" hx-get="/api/todos/parse/create" hx-target="#content-container" hx-swap="innerHTML">Create new Todo</button>
+    <div class="my-4">
+        <button 
+            class="mt-2 rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" 
+            hx-get="/api/todos/parse/create" 
+            hx-target="#content-container" 
+            hx-swap="innerHTML"
+        >Create new Todo</button>
     </div>
 
-    {{range .todos}}
-        <div class="w-48 border p-5 rounded shadow">
-            <h1>{{.Title}}</h1>
-            <p>{{.Description}}</p>
-        </div>
-    {{end}}
+    <div class="grid grid-cols-4 gap-4">
+        {{range .todos}}
+            <div class="w-48 border p-5 rounded shadow">        
+                <h1>Title: {{.Title}}</h1>
+                <p>Description: {{.Description}}</p>
+            </div>
+        {{end}}
+    </div>
 </div>

@@ -25,10 +25,18 @@ func main() {
 	apiRouter := chi.NewRouter()
 	apiRouter.Get("/metrics", apiCfg.MetricsHandler)
 	apiRouter.HandleFunc("/ping", internal.Ping)
+
+	// Get todos
 	apiRouter.Get("/todos", internal.GetTodos)
+
+	// Create todo via CURL
 	apiRouter.Post("/todos/create", internal.PostTodo)
+
+	// Parse todo from form and get template.
 	apiRouter.Post("/todos/parse/create", internal.ParseTodoHandler)
 	apiRouter.Get("/todos/parse/create", internal.ParseTodoHandler)
+
+	// Mount all qpiRouter requests to main router.
 	chiRouter.Mount("/api", apiRouter)
 
 	// Setup tempalte routes
