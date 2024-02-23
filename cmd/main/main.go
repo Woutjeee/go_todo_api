@@ -10,7 +10,6 @@ import (
 
 func main() {
 	const port = "8080"
-	//const fileRootPath = "."
 
 	apiCfg := internal.ApiConfig{
 		Hits: 0,
@@ -23,10 +22,14 @@ func main() {
 	chiRouter.Use(apiCfg.Log)
 
 	// Setup api routes
-	chiRouter.Get("/metrics", apiCfg.MetricsHandler)
-	chiRouter.HandleFunc("/api/ping", internal.Ping)
-	chiRouter.Get("/api/todos", internal.GetTodos)
-	chiRouter.Post("/api/todos", internal.PostTodo)
+	apiRouter := chi.NewRouter()
+	apiRouter.Get("/metrics", apiCfg.MetricsHandler)
+	apiRouter.HandleFunc("/ping", internal.Ping)
+	apiRouter.Get("/todos", internal.GetTodos)
+	apiRouter.Post("/todos/create", internal.PostTodo)
+	apiRouter.Post("/todos/parse/create", internal.ParseTodoHandler)
+	apiRouter.Get("/todos/parse/create", internal.ParseTodoHandler)
+	chiRouter.Mount("/api", apiRouter)
 
 	// Setup tempalte routes
 	chiRouter.Get("/", internal.HomeHandler)

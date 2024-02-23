@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"html/template"
 	"log"
 	"net/http"
 )
@@ -48,4 +49,33 @@ func PostTodo(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	res, _ := json.Marshal(todo)
 	w.Write(res)
+}
+
+func ParseTodoHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := make(map[string]interface{})
+
+	if r.Method == "POST" {
+		var todo Todo
+		r.ParseForm()
+
+		todo.Title = r.PostForm.Get("title")
+		todo.Description = r.PostForm.Get("description")
+
+		Todos = append(Todos, todo)
+		ctx["success"] = "Success"
+	}
+
+	t, err := template.ParseFiles("../../templates/pages/create_todo.html")
+	if err != nil {
+		log.Println("Error parsing template:", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	err = t.Execute(w, ctx)
+	if err != nil {
+		log.Println("Error in template execution:", err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }

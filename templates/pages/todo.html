@@ -1,6 +1,10 @@
 <div>
     <h3>{{.heading}}</h3>
 
+    <div>
+        <button class="bg-green-500 p-3" hx-get="/api/todos/parse/create" hx-target="#content-container" hx-swap="innerHTML">Create new Todo</button>
+    </div>
+
     {{range .todos}}
         <div class="w-48 border p-5 rounded shadow">
             <h1>{{.Title}}</h1>
