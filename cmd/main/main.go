@@ -22,10 +22,8 @@ func main() {
 	chiRouter.Use(apiCfg.RegisterHits)
 	chiRouter.Use(apiCfg.Log)
 
-	// Setup routes
-	chiRouter.Get("/metrics", apiCfg.MetricsHandler)
-
 	// Setup api routes
+	chiRouter.Get("/metrics", apiCfg.MetricsHandler)
 	chiRouter.HandleFunc("/api/ping", internal.Ping)
 	chiRouter.Get("/api/todos", internal.GetTodos)
 	chiRouter.Post("/api/todos", internal.PostTodo)
