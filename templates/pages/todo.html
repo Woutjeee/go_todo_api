@@ -1,0 +1,10 @@
+<div>
+    <h3>{{.heading}}</h3>
+
+    {{range .todos}}
+        <div class="w-48 border p-5 rounded shadow">
+            <h1>{{.Title}}</h1>
+            <p>{{.Description}}</p>
+        </div>
+    {{end}}
+</div>

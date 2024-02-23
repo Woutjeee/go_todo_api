@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="m-2">
+    <h1 class="text-3xl">Welcome to golang Todo app</h1>
+    <hr />
+    <div class="mt-5">
+        <button 
+            class="py-2 px-4 border rounded border-red-100"
+            hx-get="/todos" 
+            hx-target="#content-container" 
+            hx-swap="innerHTML">
+            Todos
+        </button>
+        
+        <div id="content-container">
+        </div>
+    </div>
+</body>
+</html>

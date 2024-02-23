@@ -17,21 +17,22 @@ func main() {
 	}
 
 	chiRouter := chi.NewRouter()
-	//fsHanlder := apiCfg.RegisterHits(http.StripPrefix("/app", http.FileServer(http.Dir(fileRootPath))))
 
 	// Setup middleware
 	chiRouter.Use(apiCfg.RegisterHits)
 	chiRouter.Use(apiCfg.Log)
 
 	// Setup routes
-	// chiRouter.Handle("/app", fsHanlder)
-	// chiRouter.Handle("/app/*", fsHanlder)
 	chiRouter.Get("/metrics", apiCfg.MetricsHandler)
 
-	// Setup
-	chiRouter.HandleFunc("/ping", internal.Ping)
-	chiRouter.Get("/todos", internal.GetTodos)
-	chiRouter.Post("/todos", internal.PostTodo)
+	// Setup api routes
+	chiRouter.HandleFunc("/api/ping", internal.Ping)
+	chiRouter.Get("/api/todos", internal.GetTodos)
+	chiRouter.Post("/api/todos", internal.PostTodo)
+
+	// Setup tempalte routes
+	chiRouter.Get("/", internal.HomeHandler)
+	chiRouter.Get("/todos", internal.TodoHandler)
 
 	corsMux := internal.MiddlewareCors(chiRouter)
 	srv := &http.Server{
