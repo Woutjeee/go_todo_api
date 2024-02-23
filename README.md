@@ -1,5 +1,5 @@
 # Todo API/Templating
-<hr />
+
 ### My learning objective
 - Get my first templating going using HTMX.
 - Really start making something with Go.
