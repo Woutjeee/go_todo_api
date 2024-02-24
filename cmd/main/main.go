@@ -49,6 +49,8 @@ func main() {
 		Handler: corsMux,
 	}
 
-	log.Printf("Serving on port: %s\n", port)
+	internal.StartLogger()
+	// msg := fmt.Sprintf("Serving on port: %s\n", port)
+	// internal.CreateLog(msg, internal.Info)
 	log.Fatal(srv.ListenAndServe())
 }

@@ -1,0 +1,12 @@
+{
+    "24-02-2024": [
+        {
+            "message": "test",
+            "severity": "warning"
+        },
+        {
+            "message": "test",
+            "severity": "warning"
+        }
+    ]
+}
