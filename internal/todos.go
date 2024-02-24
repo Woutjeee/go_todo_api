@@ -68,6 +68,7 @@ func CreateTodoTemplateHandler(w http.ResponseWriter, r *http.Request) {
 		todo.Description = r.PostForm.Get("description")
 
 		Todos = append(Todos, todo)
+		CreateLog("Todo Created", Info)
 		ctx["success"] = "Success"
 	}
 	executeTemplate("../../templates/pages/create_todo.html", w, ctx)
