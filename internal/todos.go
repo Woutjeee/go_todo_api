@@ -11,12 +11,7 @@ type Todo struct {
 	Description string `json:"description"`
 }
 
-var Todos = []Todo{
-	{
-		Title:       "test",
-		Description: "test",
-	},
-}
+var Todos = []Todo{}
 
 // Api endpoint to get all the Todos in json format.
 func GetTodos(w http.ResponseWriter, r *http.Request) {
@@ -27,8 +22,15 @@ func GetTodos(w http.ResponseWriter, r *http.Request) {
 	// TODO: Do better logging here what actually is the problem.
 	if len(Todos) == 0 || err != nil {
 		w.Header().Set("Content-Type", "plain/text; charset=utf-8")
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("There has been an error"))
+		status := http.StatusNoContent
+		msg := "No todos have been made yet."
+		if err != nil {
+			status = http.StatusInternalServerError
+			msg = "There has been an error"
+		}
+		CreateLog(msg, Error)
+		w.WriteHeader(status)
+		w.Write([]byte(msg))
 		return
 	}
 
