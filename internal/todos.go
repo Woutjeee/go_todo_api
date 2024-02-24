@@ -2,7 +2,6 @@ package internal
 
 import (
 	"encoding/json"
-	"html/template"
 	"log"
 	"net/http"
 )
@@ -19,10 +18,13 @@ var Todos = []Todo{
 	},
 }
 
+// Api endpoint to get all the Todos in json format.
 func GetTodos(w http.ResponseWriter, r *http.Request) {
 	log.Print(len(Todos))
-	b, err := json.Marshal(Todos)
+	byteArrContent, err := json.Marshal(Todos)
 
+	// If we have no todos, or there was an error parsing the json.
+	// TODO: Do better logging here what actually is the problem.
 	if len(Todos) == 0 || err != nil {
 		w.Header().Set("Content-Type", "plain/text; charset=utf-8")
 		w.WriteHeader(http.StatusInternalServerError)
@@ -32,9 +34,10 @@ func GetTodos(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write(b)
+	w.Write(byteArrContent)
 }
 
+// API Endpoint to create Todos via json.
 func PostTodo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var todo Todo
@@ -51,9 +54,12 @@ func PostTodo(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-func ParseTodoHandler(w http.ResponseWriter, r *http.Request) {
+// Endpoint used to get the form or create a new todo via the form.
+func CreateTodoTemplateHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := make(map[string]interface{})
 
+	// Check if we are posting, if so the user has entered some values.
+	// TODO: Error handling when none values entered.
 	if r.Method == "POST" {
 		var todo Todo
 		r.ParseForm()
@@ -64,18 +70,5 @@ func ParseTodoHandler(w http.ResponseWriter, r *http.Request) {
 		Todos = append(Todos, todo)
 		ctx["success"] = "Success"
 	}
-
-	t, err := template.ParseFiles("../../templates/pages/create_todo.html")
-	if err != nil {
-		log.Println("Error parsing template:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-
-	err = t.Execute(w, ctx)
-	if err != nil {
-		log.Println("Error in template execution:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+	executeTemplate("../../templates/pages/create_todo.html", w, ctx)
 }

@@ -33,8 +33,8 @@ func main() {
 	apiRouter.Post("/todos/create", internal.PostTodo)
 
 	// Parse todo from form and get template.
-	apiRouter.Post("/todos/parse/create", internal.ParseTodoHandler)
-	apiRouter.Get("/todos/parse/create", internal.ParseTodoHandler)
+	apiRouter.Post("/todos/parse/create", internal.CreateTodoTemplateHandler)
+	apiRouter.Get("/todos/parse/create", internal.CreateTodoTemplateHandler)
 
 	// Mount all qpiRouter requests to main router.
 	chiRouter.Mount("/api", apiRouter)

@@ -1,8 +1,6 @@
 package internal
 
 import (
-	"html/template"
-	"log"
 	"net/http"
 )
 
@@ -20,41 +18,14 @@ func MiddlewareCors(next http.Handler) http.Handler {
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := make(map[string]string)
+	ctx := make(map[string]interface{})
 	ctx["Name"] = "Wout"
-	t, err := template.ParseFiles("../../templates/index.html")
-	if err != nil {
-		log.Println("Error parsing template:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-	err = t.Execute(w, ctx)
-	if err != nil {
-		log.Println("Error in template execution:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+	executeTemplate("../../templates/index.html", w, ctx)
 }
 
 func TodoHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := make(map[string]interface{})
 	ctx["todos"] = Todos
 	ctx["heading"] = "Todos"
-
-	log.Println(Todos)
-
-	t, err := template.ParseFiles("../../templates/pages/todo.html")
-
-	if err != nil {
-		log.Println("Error parsing template:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-
-	err = t.Execute(w, ctx)
-	if err != nil {
-		log.Println("Error in template execution:", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+	executeTemplate("../../templates/pages/todo.html", w, ctx)
 }
